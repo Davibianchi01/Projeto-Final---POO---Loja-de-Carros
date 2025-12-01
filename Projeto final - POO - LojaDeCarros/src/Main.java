@@ -17,11 +17,23 @@ public class Main {
     private static final String C_BLUE = "\u001B[34m";
 
     private static final Scanner sc = new Scanner(System.in);
-    private static final RepositorioMemoria repo = new RepositorioMemoria();
+    // ALTERAÇÃO: Mudado de RepositorioMemoria para RepositorioJDBC
+    private static final Repositorio repo = new RepositorioJDBC();
     private static AdvancedReport lastAdvancedReport = null;
 
     public static void main(String[] args) {
 
+        // ALTERAÇÃO: Inicializar banco de dados
+        System.out.println(C_BLUE + "Inicializando banco de dados..." + C_RESET);
+        try {
+            ((RepositorioJDBC) repo).initializeDatabase();
+            ((RepositorioJDBC) repo).seedData();
+            System.out.println(C_GREEN + "✅ Banco de dados inicializado!" + C_RESET);
+        } catch (Exception e) {
+            System.out.println(C_RED + "Erro ao inicializar banco: " + e.getMessage() + C_RESET);
+        }
+
+        // ALTERAÇÃO: Carregar clientes iniciais do banco (se não existirem)
         carregarClientesIniciais();
 
         System.out.println("\n========================================");
@@ -55,7 +67,11 @@ public class Main {
                 case 5 -> gerarRelatorioAvancado();
                 case 6 -> exportarRelatorioMenu();
                 case 7 -> agendarTestDrive();
-                case 0 -> System.out.println(C_GREEN + "Encerrando..." + C_RESET);
+                case 0 -> {
+                    System.out.println(C_GREEN + "Encerrando..." + C_RESET);
+                    // ALTERAÇÃO: Fechar conexão com o banco
+                    DatabaseConnection.closeConnection();
+                }
                 default -> System.out.println(C_YELLOW + "Opção inválida." + C_RESET);
             }
 
@@ -65,9 +81,12 @@ public class Main {
     }
 
     private static void carregarClientesIniciais() {
-        repo.addCliente("Ana Silva", "12345678901", "11988887777", "Sedan");
-        repo.addCliente("Bruno Santos", "23456789012", "11977776666", "SUV");
-        repo.addCliente("Carla Oliveira", "34567890123", "11966665555", "Hatch");
+        // ALTERAÇÃO: Verificar se já existem clientes no banco antes de adicionar
+        if (repo.getAllClientes().size() < 3) {
+            repo.addCliente("Ana Silva", "12345678901", "11988887777", "Sedan");
+            repo.addCliente("Bruno Santos", "23456789012", "11977776666", "SUV");
+            repo.addCliente("Carla Oliveira", "34567890123", "11966665555", "Hatch");
+        }
     }
 
     private static void menuCadastro() {

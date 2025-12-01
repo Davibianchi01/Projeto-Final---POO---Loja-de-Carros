@@ -6,20 +6,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Veiculo {
     private static final AtomicInteger SEQ = new AtomicInteger(1);
 
-    private final int id;
+    private int id;
     private String marca;
     private String modelo;
     private int ano;
     private BigDecimal preco;
     private String status;
 
-    public Veiculo(String marca, String modelo, int ano, BigDecimal preco) {
-        this.id = SEQ.getAndIncrement();
+    public Veiculo(int id, String marca, String modelo, int ano, BigDecimal preco) {
+        this.id = id;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
         this.preco = preco == null ? BigDecimal.ZERO : preco;
         this.status = "disponivel";
+    }
+
+    public Veiculo(String marca, String modelo, int ano, BigDecimal preco) {
+        this.id = SEQ.getAndIncrement();
     }
 
     public int getId() { return id; }
