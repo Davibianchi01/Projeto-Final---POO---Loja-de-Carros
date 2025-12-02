@@ -21,57 +21,46 @@ public class Proposta {
         this.cliente = cliente;
         this.valorTotal = this.valorVeiculo;
     }
-
     public int getId() {
         return id;
     }
-
     public BigDecimal getValorVeiculo() {
         return valorVeiculo;
     }
-
     public BigDecimal getEntrada() {
         return entrada;
     }
-
     public int getParcelas() {
         return parcelas;
     }
-
     public Cliente getCliente() {
         return cliente;
     }
-
     public List<Veiculo> getCarrosSelecionados() {
         return carrosSelecionados;
     }
-
     public BigDecimal getValorTotalFinal() {
         return valorVeiculo.subtract(entrada);
     }
-
     @Override
     public String toString() {
         String carro = carrosSelecionados.isEmpty()
                 ? "nenhum veículo"
                 : carrosSelecionados.get(0).getMarca() + " " + carrosSelecionados.get(0).getModelo();
-
         return "Proposta#" + id +
                 " Cliente:" + (cliente != null ? cliente.getNome() : "N/A") +
                 " Veículo:" + carro +
                 " Valor:" + valorVeiculo +
                 " Entrada:" + entrada +
                 " Parcelas:" + parcelas;
-    }
 
+    }
     public BigDecimal getValorFinal() {
         return valorTotal;
     }
-
     public BigDecimal getValorTotal() {
         return valorTotal;
     }
-
     public void setValorTotal(BigDecimal valorTotal) {
         this.valorTotal = valorTotal;
     }

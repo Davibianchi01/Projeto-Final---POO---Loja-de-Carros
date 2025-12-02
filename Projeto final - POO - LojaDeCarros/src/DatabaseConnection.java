@@ -6,7 +6,6 @@ public class DatabaseConnection {
     private static final String URL = "jdbc:mysql://localhost:3306/loja_carros";
     private static final String USER = "root";
     private static final String PASSWORD = "sua_senha";
-
     private static Connection connection;
 
     static {
@@ -23,7 +22,6 @@ public class DatabaseConnection {
         }
         return connection;
     }
-
     public static void closeConnection() {
         if (connection != null) {
             try {

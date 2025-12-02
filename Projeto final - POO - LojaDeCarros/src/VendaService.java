@@ -4,9 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class VendaService {
-
     private final RepositorioMemoria repo;
-
     public VendaService(RepositorioMemoria repo) {
         this.repo = repo;
     }

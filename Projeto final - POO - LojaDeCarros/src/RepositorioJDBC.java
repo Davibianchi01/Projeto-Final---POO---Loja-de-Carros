@@ -1,10 +1,10 @@
 import java.math.BigDecimal;
-import java.sql.*; // Mantém o import geral
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RepositorioJDBC implements Repositorio {
+public abstract class RepositorioJDBC implements Repositorio {
 
     @Override
     public void addContrato(Contrato c) {
@@ -15,7 +15,6 @@ public class RepositorioJDBC implements Repositorio {
 
             pstmt.setInt(1, c.getCliente().getId());
             pstmt.setInt(2, c.getVendedor().getId());
-            // CORREÇÃO: Usar java.sql.Date.valueOf() explicitamente
             pstmt.setDate(3, java.sql.Date.valueOf(c.getData()));
             pstmt.setBigDecimal(4, c.getValorTotal());
             pstmt.setBigDecimal(5, c.getSaldoAPagar());
@@ -40,8 +39,6 @@ public class RepositorioJDBC implements Repositorio {
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            // CORREÇÃO: Usar java.sql.Date.valueOf() explicitamente
             pstmt.setDate(1, java.sql.Date.valueOf(inicio));
             pstmt.setDate(2, java.sql.Date.valueOf(fim));
 
@@ -74,12 +71,7 @@ public class RepositorioJDBC implements Repositorio {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                // ... código do cliente e vendedor ...
-
-                // CORREÇÃO: Converter java.sql.Date para LocalDate
                 LocalDate dataContrato = rs.getDate("data_contrato").toLocalDate();
-
-                // ... resto do código ...
             }
 
         } catch (SQLException e) {
@@ -87,6 +79,4 @@ public class RepositorioJDBC implements Repositorio {
         }
         return contratos;
     }
-
-    // ... resto do código permanece igual ...
 }

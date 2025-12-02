@@ -1,0 +1,19 @@
+Faturamento: 45000
+Média por venda: 45000.00
+Disponíveis: 24
+Vendidos: 1
+Vendas por vendedor:
+ - Carlos Silva: 1
+
+Contratos:
+
+=== CONTRATO #1 ===
+Cliente: Ana Silva
+Vendedor: Carlos Silva
+Data: 2025-12-01
+Valor Total: R$ 45000
+Saldo a Pagar: R$ -55000
+Veículos:
+ - Nissan Sentra
+=========================
+

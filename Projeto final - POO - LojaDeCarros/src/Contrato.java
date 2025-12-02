@@ -46,42 +46,33 @@ public class Contrato {
         );
         this.veiculos = new ArrayList<>(p.getCarrosSelecionados());
     }
-
     public int getId() {
         return id;
     }
-
     public Cliente getCliente() {
         return cliente;
     }
-
     public Vendedor getVendedor() {
         return vendedor;
     }
-
     public LocalDate getData() {
         return data;
     }
-
     public BigDecimal getValorTotal() {
         return valorTotal;
     }
-
     public BigDecimal getSaldoAPagar() {
         return saldoAPagar;
     }
-
     public List<Veiculo> getVeiculos() {
         return veiculos;
     }
-
     public void adicionarVeiculo(Veiculo veiculo) {
         if (veiculos == null) veiculos = new ArrayList<>();
         veiculos.add(veiculo);
         valorTotal = valorTotal.add(veiculo.getPreco());
         saldoAPagar = saldoAPagar.add(veiculo.getPreco());
     }
-
     public boolean formalizar() {
         if (veiculos == null || veiculos.isEmpty()) return false;
         for (Veiculo v : veiculos) v.setStatus("vendido");

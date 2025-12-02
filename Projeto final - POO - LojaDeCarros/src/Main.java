@@ -17,13 +17,83 @@ public class Main {
     private static final String C_BLUE = "\u001B[34m";
 
     private static final Scanner sc = new Scanner(System.in);
-    // ALTERAÇÃO: Mudado de RepositorioMemoria para RepositorioJDBC
-    private static final Repositorio repo = new RepositorioJDBC();
+
+    private static final Repositorio repo = new RepositorioJDBC() {
+        @Override
+        public void addCliente(String nome, String cpf, String telefone, String necessidades) {
+        }
+        @Override
+        public void addCliente(Cliente c) {
+        }
+        @Override
+        public Cliente getCliente(int id) {
+            return null;
+        }
+        @Override
+        public Collection<Cliente> getAllClientes() {
+            return List.of();
+        }
+        @Override
+        public void updateCliente(Cliente c) {
+        }
+        @Override
+        public boolean removeCliente(int id) {
+            return false;
+        }
+        @Override
+        public void addVendedor(String nome, String cpf) {
+        }
+        @Override
+        public void addVendedor(Vendedor v) {
+        }
+        @Override
+        public Vendedor getVendedor(int id) {
+            return null;
+        }
+        @Override
+        public Collection<Vendedor> getAllVendedores() {
+            return List.of();
+        }
+        @Override
+        public boolean removeVendedor(int id) {
+            return false;
+        }
+        @Override
+        public void addVeiculo(Veiculo v) {
+        }
+        @Override
+        public Veiculo getVeiculo(int id) {
+            return null;
+        }
+        @Override
+        public Collection<Veiculo> getAllVeiculos() {
+            return List.of();
+        }
+        @Override
+        public boolean removeVeiculo(int id) {
+            return false;
+        }
+        @Override
+        public void updateVeiculo(Veiculo v) {
+        }
+        @Override
+        public List<Veiculo> filtrarVeiculos(String marca, Integer anoMin, Integer anoMax, BigDecimal precoMin, BigDecimal precoMax) {
+            return List.of();
+        }
+        @Override
+        public List<Contrato> relatorioPorVendedor(int vendedorId) {
+            return List.of();
+        }
+        @Override
+        public void initializeDatabase() {
+        }
+        @Override
+        public void seedData() {
+        }
+    };
     private static AdvancedReport lastAdvancedReport = null;
 
     public static void main(String[] args) {
-
-        // ALTERAÇÃO: Inicializar banco de dados
         System.out.println(C_BLUE + "Inicializando banco de dados..." + C_RESET);
         try {
             ((RepositorioJDBC) repo).initializeDatabase();
@@ -33,7 +103,6 @@ public class Main {
             System.out.println(C_RED + "Erro ao inicializar banco: " + e.getMessage() + C_RESET);
         }
 
-        // ALTERAÇÃO: Carregar clientes iniciais do banco (se não existirem)
         carregarClientesIniciais();
 
         System.out.println("\n========================================");
