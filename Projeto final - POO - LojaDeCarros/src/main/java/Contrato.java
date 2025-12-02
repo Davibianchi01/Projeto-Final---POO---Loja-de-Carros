@@ -1,3 +1,5 @@
+package main.java;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,6 +48,10 @@ public class Contrato {
         );
         this.veiculos = new ArrayList<>(p.getCarrosSelecionados());
     }
+
+    public Contrato(MainAWT.Proposta p, LocalDate dataVenda) {
+    }
+
     public int getId() {
         return id;
     }

@@ -1,3 +1,5 @@
+package main.java;
+
 public class Pessoa {
     protected String nome;
     protected String CPF;

@@ -1,11 +1,14 @@
+package main.java;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
 public class VendaService {
-    private final RepositorioMemoria repo;
-    public VendaService(RepositorioMemoria repo) {
+    private final RepositorioJDBC repo;
+
+    public VendaService(RepositorioJDBC repo) {
         this.repo = repo;
     }
 

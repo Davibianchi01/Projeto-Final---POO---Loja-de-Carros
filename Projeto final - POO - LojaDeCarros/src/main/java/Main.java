@@ -1,3 +1,5 @@
+package main.java;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -18,91 +20,37 @@ public class Main {
 
     private static final Scanner sc = new Scanner(System.in);
 
-    private static final Repositorio repo = new RepositorioJDBC() {
-        @Override
-        public void addCliente(String nome, String cpf, String telefone, String necessidades) {
-        }
-        @Override
-        public void addCliente(Cliente c) {
-        }
-        @Override
-        public Cliente getCliente(int id) {
-            return null;
-        }
-        @Override
-        public Collection<Cliente> getAllClientes() {
-            return List.of();
-        }
-        @Override
-        public void updateCliente(Cliente c) {
-        }
-        @Override
-        public boolean removeCliente(int id) {
-            return false;
-        }
-        @Override
-        public void addVendedor(String nome, String cpf) {
-        }
-        @Override
-        public void addVendedor(Vendedor v) {
-        }
-        @Override
-        public Vendedor getVendedor(int id) {
-            return null;
-        }
-        @Override
-        public Collection<Vendedor> getAllVendedores() {
-            return List.of();
-        }
-        @Override
-        public boolean removeVendedor(int id) {
-            return false;
-        }
-        @Override
-        public void addVeiculo(Veiculo v) {
-        }
-        @Override
-        public Veiculo getVeiculo(int id) {
-            return null;
-        }
-        @Override
-        public Collection<Veiculo> getAllVeiculos() {
-            return List.of();
-        }
-        @Override
-        public boolean removeVeiculo(int id) {
-            return false;
-        }
-        @Override
-        public void updateVeiculo(Veiculo v) {
-        }
-        @Override
-        public List<Veiculo> filtrarVeiculos(String marca, Integer anoMin, Integer anoMax, BigDecimal precoMin, BigDecimal precoMax) {
-            return List.of();
-        }
-        @Override
-        public List<Contrato> relatorioPorVendedor(int vendedorId) {
-            return List.of();
-        }
-        @Override
-        public void initializeDatabase() {
-        }
-        @Override
-        public void seedData() {
-        }
-    };
+    private static final RepositorioJDBC repo = new RepositorioJDBC();
     private static AdvancedReport lastAdvancedReport = null;
 
     public static void main(String[] args) {
         System.out.println(C_BLUE + "Inicializando banco de dados..." + C_RESET);
+
+        if (!DatabaseConnection.testConnection()) {
+            System.out.println(C_RED + "❌ Não foi possível conectar ao MySQL!" + C_RESET);
+            System.out.println(C_YELLOW + "Por favor, verifique se:" + C_RESET);
+            System.out.println("1. O MySQL está instalado e rodando");
+            System.out.println("2. O serviço MySQL está ativo");
+            System.out.println("3. As credenciais no DatabaseConnection.java estão corretas");
+            System.out.println(C_YELLOW + "URL: jdbc:mysql://127.0.0.1:3306/" + C_RESET);
+            System.out.println(C_YELLOW + "Usuário: root" + C_RESET);
+            System.out.println(C_YELLOW + "Senha: (vazia)" + C_RESET);
+            System.out.println("\nPara instalar o MySQL rapidamente:");
+            System.out.println("1. Baixe o XAMPP: https://www.apachefriends.org");
+            System.out.println("2. Instale e inicie o MySQL no XAMPP Control Panel");
+            System.out.println("3. Execute o sistema novamente");
+            return;
+        }
+
         try {
-            ((RepositorioJDBC) repo).initializeDatabase();
-            ((RepositorioJDBC) repo).seedData();
+            repo.initializeDatabase();
+            repo.seedData();
             System.out.println(C_GREEN + "✅ Banco de dados inicializado!" + C_RESET);
         } catch (Exception e) {
             System.out.println(C_RED + "Erro ao inicializar banco: " + e.getMessage() + C_RESET);
+            e.printStackTrace();
+            return;
         }
-
         carregarClientesIniciais();
 
         System.out.println("\n========================================");
@@ -138,7 +86,6 @@ public class Main {
                 case 7 -> agendarTestDrive();
                 case 0 -> {
                     System.out.println(C_GREEN + "Encerrando..." + C_RESET);
-                    // ALTERAÇÃO: Fechar conexão com o banco
                     DatabaseConnection.closeConnection();
                 }
                 default -> System.out.println(C_YELLOW + "Opção inválida." + C_RESET);
@@ -150,7 +97,6 @@ public class Main {
     }
 
     private static void carregarClientesIniciais() {
-        // ALTERAÇÃO: Verificar se já existem clientes no banco antes de adicionar
         if (repo.getAllClientes().size() < 3) {
             repo.addCliente("Ana Silva", "12345678901", "11988887777", "Sedan");
             repo.addCliente("Bruno Santos", "23456789012", "11977776666", "SUV");
@@ -239,6 +185,15 @@ public class Main {
         String modelo = lerStringComPadrao("Modelo: ", "[\\p{L}0-9 .\\-_/]{1,60}", "Modelo inválido.");
         int ano = lerIntComIntervalo("Ano: ", 1900, LocalDate.now().getYear());
         BigDecimal preco = lerBigDecimalPositivo("Preço: ");
+
+        if (marca == null || marca.trim().isEmpty()) {
+            System.out.println(C_RED + "Marca não pode ser vazia!" + C_RESET);
+            return;
+        }
+        if (modelo == null || modelo.trim().isEmpty()) {
+            System.out.println(C_RED + "Modelo não pode ser vazio!" + C_RESET);
+            return;
+        }
 
         Veiculo v = new Veiculo(marca.trim(), modelo.trim(), ano, preco);
         v.setStatus("disponivel");

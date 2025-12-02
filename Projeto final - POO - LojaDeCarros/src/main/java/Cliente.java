@@ -1,3 +1,5 @@
+package main.java;
+
 public class Cliente extends Pessoa {
     private final int id;
     private String telefone;
